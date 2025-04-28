@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demo - TamperKit</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Demo Tamper Kit</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,87 +13,81 @@
     h1 {
       margin-bottom: 20px;
     }
-    .button-group {
+    .button-group, .snackbar-demo {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      margin-bottom: 20px;
+    }
+    .section {
+      margin-bottom: 40px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Exemplos de Botões - TamperKit</h1>
+  <h1>Demo Tamper Kit</h1>
 
-  <div class="button-group" id="buttonContainer"></div>
+  <!-- Carrega os módulos diretamente do GitHub -->
+  <script src="https://github.com/statusup/tamper-kit/raw/refs/heads/main/components/color/color.js"></script>
+  <script src="https://github.com/statusup/tamper-kit/raw/refs/heads/main/components/button/button.js"></script>
+  <script src="https://github.com/statusup/tamper-kit/raw/refs/heads/main/components/snackbar/snackbar.js"></script>
+
+  <div class="section">
+    <h2>1. Cores Disponíveis</h2>
+    <div class="button-group" id="colorButtons"></div>
+  </div>
+
+  <div class="section">
+    <h2>2. Botões Temáticos</h2>
+    <div class="button-group" id="themedButtons"></div>
+  </div>
+
+  <div class="section">
+    <h2>3. Teste de Snackbar</h2>
+    <div class="snackbar-demo" id="snackbarButtons"></div>
+  </div>
 
   <script>
-    // Simulação rápida: importar funções que existiriam no ambiente Tampermonkey
-    window.TamperKit = {
-      Color: {
-        getColor(name) {
-          const palette = {
-            success: '#4CAF50',
-            done: '#388E3C',
-            warning: '#FFC107',
-            danger: '#F44336',
-            info: '#2196F3',
-            default: '#9E9E9E'
-          };
-          return palette[name] || palette.default;
+    // 1. Mostrar botões que exibem cada cor
+    const palette = Object.keys(window.KitUI.Color.palette);
+    const colorButtons = document.getElementById('colorButtons');
+    palette.forEach(key => {
+      const btn = document.createElement('button');
+      btn.textContent = key;
+      btn.style.backgroundColor = window.KitUI.Color.get(key);
+      btn.style.color = '#fff';
+      btn.style.border = 'none';
+      btn.style.padding = '6px 12px';
+      btn.style.borderRadius = '4px';
+      colorButtons.appendChild(btn);
+    });
+
+    // 2. Criar botões usando o módulo Button e aplicar as cores
+    const themedButtons = document.getElementById('themedButtons');
+    palette.forEach(key => {
+      const btn = window.KitUI.Button.create({
+        text: key,
+        onClick: () => window.KitUI.Snackbar.show({ text: `Você clicou em "${key}"`, duration: 2000 }),
+        style: {
+          backgroundColor: window.KitUI.Color.get(key),
+          color: '#fff'
         }
-      },
-      Button: {
-        createButton(options) {
-          const button = document.createElement('button');
-          button.textContent = options.text;
-          button.style.padding = '8px 12px';
-          button.style.border = 'none';
-          button.style.borderRadius = '5px';
-          button.style.color = '#ffffff';
-          button.style.backgroundColor = window.TamperKit.Color.getColor(options.color);
-          button.style.cursor = 'pointer';
-          button.style.fontSize = '14px';
-          button.addEventListener('click', options.onClick);
-          document.getElementById('buttonContainer').appendChild(button);
+      });
+      themedButtons.appendChild(btn);
+    });
+
+    // 3. Botões para testar snackbar com diferentes mensagens
+    const snackbarButtons = document.getElementById('snackbarButtons');
+    ['Sucesso!', 'Atenção!', 'Erro!'].forEach(texto => {
+      const btn = window.KitUI.Button.create({
+        text: texto,
+        onClick: () => window.KitUI.Snackbar.show({ text: texto, duration: 2500 }),
+        style: {
+          backgroundColor: '#555', color: '#fff'
         }
-      }
-    };
-
-    // Cria botões de exemplo
-    window.TamperKit.Button.createButton({
-      text: 'Aprovado',
-      color: 'success',
-      onClick: () => alert('Botão Aprovado clicado!')
-    });
-
-    window.TamperKit.Button.createButton({
-      text: 'Concluído',
-      color: 'done',
-      onClick: () => alert('Botão Concluído clicado!')
-    });
-
-    window.TamperKit.Button.createButton({
-      text: 'Atenção',
-      color: 'warning',
-      onClick: () => alert('Botão Atenção clicado!')
-    });
-
-    window.TamperKit.Button.createButton({
-      text: 'Perigo',
-      color: 'danger',
-      onClick: () => alert('Botão Perigo clicado!')
-    });
-
-    window.TamperKit.Button.createButton({
-      text: 'Informação',
-      color: 'info',
-      onClick: () => alert('Botão Informação clicado!')
-    });
-
-    window.TamperKit.Button.createButton({
-      text: 'Padrão',
-      color: 'default',
-      onClick: () => alert('Botão Padrão clicado!')
+      });
+      snackbarButtons.appendChild(btn);
     });
   </script>
 
