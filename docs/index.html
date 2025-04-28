@@ -13,14 +13,22 @@
     h1 {
       margin-bottom: 20px;
     }
-    .button-group, .snackbar-demo {
+    .section {
+      margin-bottom: 40px;
+    }
+    .button-group {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-top: 10px;
     }
-    .section {
-      margin-bottom: 40px;
+    button {
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #fff;
     }
   </style>
 </head>
@@ -28,63 +36,64 @@
 
   <h1>Demo Tamper Kit</h1>
 
-  <!-- Carrega os módulos diretamente do GitHub -->
-  <script src="https://github.com/statusup/tamper-kit/raw/refs/heads/main/components/color/color.js"></script>
-  <script src="https://github.com/statusup/tamper-kit/raw/refs/heads/main/components/button/button.js"></script>
-  <script src="https://github.com/statusup/tamper-kit/raw/refs/heads/main/components/snackbar/snackbar.js"></script>
+  <!-- 1. Carregamento dos módulos via raw.githubusercontent.com -->
+  <script src="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/color/color.js"></script>
+  <script src="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/button/button.js"></script>
+  <script src="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/snackbar/snackbar.js"></script>
 
+  <!-- 2. Seção: Cores Disponíveis -->
   <div class="section">
     <h2>1. Cores Disponíveis</h2>
     <div class="button-group" id="colorButtons"></div>
   </div>
 
+  <!-- 3. Seção: Botões Temáticos -->
   <div class="section">
     <h2>2. Botões Temáticos</h2>
     <div class="button-group" id="themedButtons"></div>
   </div>
 
+  <!-- 4. Seção: Teste de Snackbar -->
   <div class="section">
     <h2>3. Teste de Snackbar</h2>
-    <div class="snackbar-demo" id="snackbarButtons"></div>
+    <div class="button-group" id="snackbarButtons"></div>
   </div>
 
+  <!-- 5. Script de inicialização -->
   <script>
-    // 1. Mostrar botões que exibem cada cor
+    // obtém as chaves da paleta de cores
     const palette = Object.keys(window.KitUI.Color.palette);
+
+    // 1. Popula 'Cores Disponíveis'
     const colorButtons = document.getElementById('colorButtons');
     palette.forEach(key => {
       const btn = document.createElement('button');
       btn.textContent = key;
       btn.style.backgroundColor = window.KitUI.Color.get(key);
-      btn.style.color = '#fff';
-      btn.style.border = 'none';
-      btn.style.padding = '6px 12px';
-      btn.style.borderRadius = '4px';
       colorButtons.appendChild(btn);
     });
 
-    // 2. Criar botões usando o módulo Button e aplicar as cores
+    // 2. Popula 'Botões Temáticos'
     const themedButtons = document.getElementById('themedButtons');
     palette.forEach(key => {
       const btn = window.KitUI.Button.create({
         text: key,
         onClick: () => window.KitUI.Snackbar.show({ text: `Você clicou em "${key}"`, duration: 2000 }),
         style: {
-          backgroundColor: window.KitUI.Color.get(key),
-          color: '#fff'
+          backgroundColor: window.KitUI.Color.get(key)
         }
       });
       themedButtons.appendChild(btn);
     });
 
-    // 3. Botões para testar snackbar com diferentes mensagens
+    // 3. Popula 'Teste de Snackbar'
     const snackbarButtons = document.getElementById('snackbarButtons');
     ['Sucesso!', 'Atenção!', 'Erro!'].forEach(texto => {
       const btn = window.KitUI.Button.create({
         text: texto,
         onClick: () => window.KitUI.Snackbar.show({ text: texto, duration: 2500 }),
         style: {
-          backgroundColor: '#555', color: '#fff'
+          backgroundColor: window.KitUI.Color.get('default')
         }
       });
       snackbarButtons.appendChild(btn);
