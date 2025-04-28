@@ -20,12 +20,13 @@ Este projeto foi criado para ser **simples, modular e expansível**.
 
 ## 📂 Estrutura do Repositório
 
-tamper-kit/ 
-├── README.md 
-├── components/ 
-│ └── buttons/ 
-│ └── botao-kit.user.js └── tests/ └── test-buttons.user.js
-
+tamper-kit/
+├── README.md
+├── components/
+│   └── buttons/
+│       └── botao-kit.user.js
+└── tests/
+    └── test-buttons.user.js
 
 - `components/`: Componentes reutilizáveis (ex: botões, modais, tooltips...).
 - `tests/`: Scripts de teste para validar o funcionamento dos componentes.
