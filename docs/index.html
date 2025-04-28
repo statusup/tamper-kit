@@ -102,10 +102,10 @@
   </script>
 
   <script>
-  // components/snackbar/snackbar.js
+  // components/snackbar/snackbar.js (atualizado com position)
   window.KitUI = window.KitUI || {};
   window.KitUI.Snackbar = {
-    show: function({ text = 'Mensagem', duration = 3000 } = {}) {
+    show: function({ text = 'Mensagem', duration = 3000, position = 'bottom-center' } = {}) {
       if (!document.getElementById('kitui-snackbar-style')) {
         const style = document.createElement('style');
         style.id = 'kitui-snackbar-style';
@@ -116,8 +116,6 @@
             background: #333; color: #fff;
             text-align: center; border-radius: 4px;
             padding: 12px; position: fixed;
-            left: 50%; bottom: 30px;
-            transform: translateX(-50%);
             opacity: 0; transition: opacity .3s ease;
             z-index: 9999;
           }
@@ -130,6 +128,15 @@
       const bar = document.createElement('div');
       bar.className = 'kitui-snackbar';
       bar.textContent = text;
+      const posMap = {
+        'bottom-center': { left: '50%', transform: 'translateX(-50%)', bottom: '30px' },
+        'bottom-right':  { right: '30px', bottom: '30px' },
+        'bottom-left':   { left: '30px', bottom: '30px' },
+        'top-center':    { left: '50%', transform: 'translateX(-50%)', top: '30px' },
+        'top-right':     { right: '30px', top: '30px' },
+        'top-left':      { left: '30px', top: '30px' }
+      };
+      Object.assign(bar.style, posMap[position] || posMap['bottom-center']);
       document.body.appendChild(bar);
       requestAnimationFrame(() => bar.classList.add('show'));
       setTimeout(() => {
@@ -149,7 +156,6 @@
       <li><a href="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/button/button.js" target="_blank">button.js</a></li>
       <li><a href="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/snackbar/snackbar.js" target="_blank">snackbar.js</a></li>
     </ul>
-
     <details>
       <summary>color.js</summary>
       <pre><code>
@@ -170,7 +176,6 @@ window.KitUI.Color = {
 };
       </code></pre>
     </details>
-
     <details>
       <summary>button.js</summary>
       <pre><code>
@@ -194,14 +199,13 @@ window.KitUI.Button = {
 };
       </code></pre>
     </details>
-
     <details>
       <summary>snackbar.js</summary>
       <pre><code>
 // components/snackbar/snackbar.js
 window.KitUI = window.KitUI || {};
 window.KitUI.Snackbar = {
-  show: function({ text = 'Mensagem', duration = 3000 } = {}) {
+  show: function({ text = 'Mensagem', duration = 3000, position = 'bottom-center' } = {}) {
     if (!document.getElementById('kitui-snackbar-style')) {
       const style = document.createElement('style');
       style.id = 'kitui-snackbar-style';
@@ -212,8 +216,6 @@ window.KitUI.Snackbar = {
           background: #333; color: #fff;
           text-align: center; border-radius: 4px;
           padding: 12px; position: fixed;
-          left: 50%; bottom: 30px;
-          transform: translateX(-50%);
           opacity: 0; transition: opacity .3s ease;
           z-index: 9999;
         }
@@ -226,6 +228,15 @@ window.KitUI.Snackbar = {
     const bar = document.createElement('div');
     bar.className = 'kitui-snackbar';
     bar.textContent = text;
+    const posMap = {
+      'bottom-center': { left: '50%', transform: 'translateX(-50%)', bottom: '30px' },
+      'bottom-right':  { right: '30px', bottom: '30px' },
+      'bottom-left':   { left: '30px', bottom: '30px' },
+      'top-center':    { left: '50%', transform: 'translateX(-50%)', top: '30px' },
+      'top-right':     { right: '30px', top: '30px' },
+      'top-left':      { left: '30px', top: '30px' }
+    };
+    Object.assign(bar.style, posMap[position] || posMap['bottom-center']);
     document.body.appendChild(bar);
     requestAnimationFrame(() => bar.classList.add('show'));
     setTimeout(() => {
@@ -255,6 +266,11 @@ window.KitUI.Snackbar = {
     <div class="button-group" id="snackbarButtons"></div>
   </div>
 
+  <div class="section">
+    <h2>5. Snackbar nos Cantos</h2>
+    <div class="button-group" id="posButtons"></div>
+  </div>
+
   <!-- Initialization script -->
 
   <script>
@@ -274,13 +290,13 @@ window.KitUI.Snackbar = {
     palette.forEach(key => {
       const btn = window.KitUI.Button.create({
         text: key,
-        onClick: () => window.KitUI.Snackbar.show({ text: `Você clicou em "${key}"`, duration: 2000 }),
+        onClick: () => window.KitUI.Snackbar.show({ text: `Você clicou em “${key}”`, duration: 2000 }),
         style: { backgroundColor: window.KitUI.Color.get(key) }
       });
       themedButtons.appendChild(btn);
     });
 
-    // 3. Snackbar
+    // 3. Snackbar básico
     const snackbarButtons = document.getElementById('snackbarButtons');
     ['Sucesso!', 'Atenção!', 'Erro!'].forEach(texto => {
       const btn = window.KitUI.Button.create({
@@ -289,6 +305,25 @@ window.KitUI.Snackbar = {
         style: { backgroundColor: window.KitUI.Color.get('default') }
       });
       snackbarButtons.appendChild(btn);
+    });
+
+    // 5. Snackbar em posições
+    const positions = [
+      'bottom-center','bottom-right','bottom-left',
+      'top-center','top-right','top-left'
+    ];
+    const posButtons = document.getElementById('posButtons');
+    positions.forEach(pos => {
+      const btn = window.KitUI.Button.create({
+        text: pos.replace('-', ' '),
+        onClick: () => window.KitUI.Snackbar.show({
+          text: `Snackbar: ${pos}`,
+          position: pos,
+          duration: 2000
+        }),
+        style: { backgroundColor: window.KitUI.Color.get('info') }
+      });
+      posButtons.appendChild(btn);
     });
   </script>
 
