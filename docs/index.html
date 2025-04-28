@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo - TamperKit</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Exemplos de Botões - TamperKit</h1>
+
+  <div class="button-group" id="buttonContainer"></div>
+
+  <script>
+    // Simulação rápida: importar funções que existiriam no ambiente Tampermonkey
+    window.TamperKit = {
+      Color: {
+        getColor(name) {
+          const palette = {
+            success: '#4CAF50',
+            done: '#388E3C',
+            warning: '#FFC107',
+            danger: '#F44336',
+            info: '#2196F3',
+            default: '#9E9E9E'
+          };
+          return palette[name] || palette.default;
+        }
+      },
+      Button: {
+        createButton(options) {
+          const button = document.createElement('button');
+          button.textContent = options.text;
+          button.style.padding = '8px 12px';
+          button.style.border = 'none';
+          button.style.borderRadius = '5px';
+          button.style.color = '#ffffff';
+          button.style.backgroundColor = window.TamperKit.Color.getColor(options.color);
+          button.style.cursor = 'pointer';
+          button.style.fontSize = '14px';
+          button.addEventListener('click', options.onClick);
+          document.getElementById('buttonContainer').appendChild(button);
+        }
+      }
+    };
+
+    // Cria botões de exemplo
+    window.TamperKit.Button.createButton({
+      text: 'Aprovado',
+      color: 'success',
+      onClick: () => alert('Botão Aprovado clicado!')
+    });
+
+    window.TamperKit.Button.createButton({
+      text: 'Concluído',
+      color: 'done',
+      onClick: () => alert('Botão Concluído clicado!')
+    });
+
+    window.TamperKit.Button.createButton({
+      text: 'Atenção',
+      color: 'warning',
+      onClick: () => alert('Botão Atenção clicado!')
+    });
+
+    window.TamperKit.Button.createButton({
+      text: 'Perigo',
+      color: 'danger',
+      onClick: () => alert('Botão Perigo clicado!')
+    });
+
+    window.TamperKit.Button.createButton({
+      text: 'Informação',
+      color: 'info',
+      onClick: () => alert('Botão Informação clicado!')
+    });
+
+    window.TamperKit.Button.createButton({
+      text: 'Padrão',
+      color: 'default',
+      onClick: () => alert('Botão Padrão clicado!')
+    });
+  </script>
+
+</body>
+</html>
