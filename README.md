@@ -20,6 +20,7 @@ Este projeto foi criado para ser **simples, modular e expansível**.
 
 ## 📂 Estrutura do Repositório
 
+```
 tamper-kit/
 ├── README.md
 ├── components/
@@ -27,6 +28,7 @@ tamper-kit/
 │       └── botao-kit.user.js
 └── tests/
     └── test-buttons.user.js
+```
 
 - `components/`: Componentes reutilizáveis (ex: botões, modais, tooltips...).
 - `tests/`: Scripts de teste para validar o funcionamento dos componentes.
@@ -46,3 +48,23 @@ window.TamperKit.createButton({
   text: 'Clique aqui',
   onClick: () => alert('Botão clicado!'),
 });
+```
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- JavaScript (ES6+)
+- Tampermonkey
+
+---
+
+## 📜 Licença
+
+Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+
+---
+
+## ✨ Status do projeto
+
+🚀 Em desenvolvimento inicial (v0.1)
