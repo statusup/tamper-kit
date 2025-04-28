@@ -66,7 +66,7 @@
 
   <h1>Demo Tamper Kit</h1>
 
-  <!-- Inline modules carregados do GitHub (raw) -->
+  <!-- Carregamento dos módulos -->
   <script src="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/color/color.js"></script>
   <script src="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/button/button.js"></script>
   <script src="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/snackbar/snackbar.js"></script>
@@ -86,12 +86,12 @@
   </div>
 
   <div class="section">
-    <h2>3. Teste de Snackbar (centro inferior)</h2>
+    <h2>3. Teste de Snackbar</h2>
     <div class="button-group" id="snackbarButtons"></div>
   </div>
 
   <div class="section">
-    <h2>4. Snackbar em Cantos</h2>
+    <h2>4. Snackbar nos Cantos</h2>
     <div class="button-group" id="posButtons"></div>
   </div>
 
@@ -101,12 +101,13 @@
   </div>
 
   <div class="section">
-    <h2>6. Radio Button</h2>
+    <h2>6. Radio Buttons</h2>
     <div class="button-group" id="radioGroup"></div>
   </div>
 
+  <!-- Links RAW dos módulos -->
   <section id="raw-modules" class="section">
-    <h2>7. Módulos RAW para cópia</h2>
+    <h2>7. Módulos RAW para Cópia</h2>
     <ul>
       <li><a href="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/color/color.js" target="_blank">color.js</a></li>
       <li><a href="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/button/button.js" target="_blank">button.js</a></li>
@@ -114,114 +115,90 @@
       <li><a href="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/checkbox/checkbox.js" target="_blank">checkbox.js</a></li>
       <li><a href="https://raw.githubusercontent.com/statusup/tamper-kit/main/components/radio-button/radio-button.js" target="_blank">radio-button.js</a></li>
     </ul>
-
-    <!-- Exemplos de Código -->
-    <details>
-      <summary>color.js</summary>
-      <pre><code>/* Link: color.js */
-window.KitUI = window.KitUI || {};
-window.KitUI.Color = { palette: { success: '#4CAF50', done: '#388E3C', warning: '#FFC107', danger: '#F44336', info: '#2196F3', default: '#9E9E9E' }, get: function(name) { return this.palette[name] || this.palette.default; } };
-</code></pre>
-    </details>
-
-    <details>
-      <summary>button.js</summary>
-      <pre><code>/* Link: button.js */
-window.KitUI = window.KitUI || {};
-window.KitUI.Button = { create: function({ text = 'Botão', onClick = () => {}, style = {} } = {}) { const btn = document.createElement('button'); btn.textContent = text; Object.assign(btn.style, { padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '14px', ...style }); btn.addEventListener('click', onClick); return btn; } };
-</code></pre>
-    </details>
-
-    <details>
-      <summary>snackbar.js</summary>
-      <pre><code>/* Link: snackbar.js */
-window.KitUI = window.KitUI || {};
-window.KitUI.Snackbar = { show: function({ text = 'Mensagem', duration = 3000, position = 'bottom-center' } = {}) { if (!document.getElementById('kitui-snackbar-style')) { const style = document.createElement('style'); style.id = 'kitui-snackbar-style'; style.textContent = '.kitui-snackbar { visibility: hidden; min-width: 200px; background: #333; color: #fff; text-align: center; border-radius: 4px; padding: 12px; position: fixed; opacity: 0; transition: opacity .3s ease; z-index: 9999; } .kitui-snackbar.show { visibility: visible; opacity: 1; }'; document.head.appendChild(style); } const bar = document.createElement('div'); bar.className = 'kitui-snackbar'; bar.textContent = text; const posMap = { 'bottom-center': { left: '50%', transform: 'translateX(-50%)', bottom: '30px' }, 'bottom-right': { right: '30px', bottom: '30px' }, 'bottom-left': { left: '30px', bottom: '30px' }, 'top-center': { left: '50%', transform: 'translateX(-50%)', top: '30px' }, 'top-right': { right: '30px', top: '30px' }, 'top-left': { left: '30px', top: '30px' } }; Object.assign(bar.style, posMap[position] || posMap['bottom-center']); document.body.appendChild(bar); requestAnimationFrame(() => bar.classList.add('show')); setTimeout(() => { bar.classList.remove('show'); setTimeout(() => bar.remove(), 300); }, duration); } };
-</code></pre>
-    </details>
-
   </section>
 
-  <!-- Scripts de inicialização -->
+  <!-- Inicialização dos componentes -->
   <script>
-    const palette = Object.keys(window.KitUI.Color.palette);
+    window.addEventListener('load', () => {
+      const palette = Object.keys(window.KitUI.Color.palette);
 
-    // 1. Cores
-    const colorButtons = document.getElementById('colorButtons');
-    palette.forEach(key => {
-      const btn = document.createElement('button');
-      btn.textContent = key;
-      btn.style.backgroundColor = window.KitUI.Color.get(key);
-      colorButtons.appendChild(btn);
-    });
-
-    // 2. Botões Temáticos
-    const themedButtons = document.getElementById('themedButtons');
-    palette.forEach(key => {
-      const btn = window.KitUI.Button.create({
-        text: key,
-        onClick: () => window.KitUI.Snackbar.show({ text: `Você clicou em "${key}"`, duration: 2000 }),
-        style: { backgroundColor: window.KitUI.Color.get(key) }
+      // 1. Cores
+      const colorButtons = document.getElementById('colorButtons');
+      palette.forEach(key => {
+        const btn = document.createElement('button');
+        btn.textContent = key;
+        btn.style.backgroundColor = window.KitUI.Color.get(key);
+        colorButtons.appendChild(btn);
       });
-      themedButtons.appendChild(btn);
-    });
 
-    // 3. Snackbars básicos
-    const snackbarButtons = document.getElementById('snackbarButtons');
-    ['Sucesso!', 'Atenção!', 'Erro!'].forEach(texto => {
-      const btn = window.KitUI.Button.create({
-        text: texto,
-        onClick: () => window.KitUI.Snackbar.show({ text: texto, duration: 2500 }),
-        style: { backgroundColor: window.KitUI.Color.get('default') }
+      // 2. Botões Temáticos
+      const themedButtons = document.getElementById('themedButtons');
+      palette.forEach(key => {
+        const btn = window.KitUI.Button.create({
+          text: key,
+          onClick: () => window.KitUI.Snackbar.show({ text: `Você clicou em "${key}"`, duration: 2000 }),
+          style: { backgroundColor: window.KitUI.Color.get(key) }
+        });
+        themedButtons.appendChild(btn);
       });
-      snackbarButtons.appendChild(btn);
-    });
 
-    // 4. Snackbars em diferentes posições
-    const positions = ['bottom-center', 'bottom-right', 'bottom-left', 'top-center', 'top-right', 'top-left'];
-    const posButtons = document.getElementById('posButtons');
-    positions.forEach(pos => {
-      const btn = window.KitUI.Button.create({
-        text: pos.replace('-', ' '),
-        onClick: () => window.KitUI.Snackbar.show({ text: `Snackbar ${pos}`, position: pos }),
-        style: { backgroundColor: window.KitUI.Color.get('info') }
+      // 3. Snackbar básico
+      const snackbarButtons = document.getElementById('snackbarButtons');
+      ['Sucesso!', 'Atenção!', 'Erro!'].forEach(texto => {
+        const btn = window.KitUI.Button.create({
+          text: texto,
+          onClick: () => window.KitUI.Snackbar.show({ text: texto, duration: 2500 }),
+          style: { backgroundColor: window.KitUI.Color.get('default') }
+        });
+        snackbarButtons.appendChild(btn);
       });
-      posButtons.appendChild(btn);
-    });
 
-    // 5. Checkbox
-    const checkboxGroup = document.getElementById('checkboxGroup');
-    const checkbox1 = window.KitUI.Checkbox.create({
-      label: 'Ativar notificações',
-      checked: false,
-      onChange: checked => window.KitUI.Snackbar.show({ text: `Notificações ${checked ? 'ativadas' : 'desativadas'}` })
-    });
-    const checkbox2 = window.KitUI.Checkbox.create({
-      label: 'Aceitar termos',
-      checked: true,
-      onChange: checked => window.KitUI.Snackbar.show({ text: `Termos ${checked ? 'aceitos' : 'não aceitos'}` })
-    });
-    checkboxGroup.appendChild(checkbox1);
-    checkboxGroup.appendChild(checkbox2);
+      // 4. Snackbar em posições
+      const positions = ['bottom-center', 'bottom-right', 'bottom-left', 'top-center', 'top-right', 'top-left'];
+      const posButtons = document.getElementById('posButtons');
+      positions.forEach(pos => {
+        const btn = window.KitUI.Button.create({
+          text: pos.replace('-', ' '),
+          onClick: () => window.KitUI.Snackbar.show({ text: `Snackbar: ${pos}`, position: pos }),
+          style: { backgroundColor: window.KitUI.Color.get('info') }
+        });
+        posButtons.appendChild(btn);
+      });
 
-    // 6. Radio Buttons
-    const radioGroup = document.getElementById('radioGroup');
-    const radio1 = window.KitUI.RadioButton.create({
-      label: 'Opção A',
-      value: 'A',
-      name: 'group1',
-      checked: true,
-      onChange: value => window.KitUI.Snackbar.show({ text: `Opção ${value} selecionada` })
+      // 5. Checkbox
+      const checkboxGroup = document.getElementById('checkboxGroup');
+      const checkbox1 = window.KitUI.Checkbox.create({
+        label: 'Ativar notificações',
+        checked: false,
+        onChange: checked => window.KitUI.Snackbar.show({ text: `Notificações ${checked ? 'ativadas' : 'desativadas'}` })
+      });
+      const checkbox2 = window.KitUI.Checkbox.create({
+        label: 'Aceitar termos',
+        checked: true,
+        onChange: checked => window.KitUI.Snackbar.show({ text: `Termos ${checked ? 'aceitos' : 'não aceitos'}` })
+      });
+      checkboxGroup.appendChild(checkbox1);
+      checkboxGroup.appendChild(checkbox2);
+
+      // 6. Radio Buttons
+      const radioGroup = document.getElementById('radioGroup');
+      const radio1 = window.KitUI.RadioButton.create({
+        label: 'Opção A',
+        value: 'A',
+        name: 'grupo1',
+        checked: true,
+        onChange: value => window.KitUI.Snackbar.show({ text: `Selecionado: ${value}` })
+      });
+      const radio2 = window.KitUI.RadioButton.create({
+        label: 'Opção B',
+        value: 'B',
+        name: 'grupo1',
+        checked: false,
+        onChange: value => window.KitUI.Snackbar.show({ text: `Selecionado: ${value}` })
+      });
+      radioGroup.appendChild(radio1);
+      radioGroup.appendChild(radio2);
     });
-    const radio2 = window.KitUI.RadioButton.create({
-      label: 'Opção B',
-      value: 'B',
-      name: 'group1',
-      checked: false,
-      onChange: value => window.KitUI.Snackbar.show({ text: `Opção ${value} selecionada` })
-    });
-    radioGroup.appendChild(radio1);
-    radioGroup.appendChild(radio2);
   </script>
 
 </body>
